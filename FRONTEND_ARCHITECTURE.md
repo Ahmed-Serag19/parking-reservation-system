@@ -4,12 +4,18 @@
 
 This document outlines the frontend architecture for the Parking Reservation System, a real-time administrative application with three main user interfaces: Gate Check-in, Employee Checkpoint, and Admin Dashboard.
 
+## System Architecture Diagram
+
+![Parking Reservation System Architecture](./src/assets/images/parking-reservation-sys.png)
+
+_The diagram above shows the overall system architecture, data flow, and component relationships with clean visual hierarchy and professional styling._
+
 ## Architecture Decisions
 
 ### 1. Framework Choice: React + Vite vs Next.js
 
 **Decision: React + Vite**
-
+Okin par
 **Rationale:**
 
 - **Internal Admin Tool**: This is not a public-facing website requiring SEO or server-side rendering
