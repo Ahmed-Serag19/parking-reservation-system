@@ -28,7 +28,7 @@ class ApiError extends Error {
 
 class ApiService {
   private getAuthToken(): string | null {
-    return localStorage.getItem("auth_token");
+    return sessionStorage.getItem("auth_token");
   }
 
   private getAuthHeaders(): HeadersInit {
