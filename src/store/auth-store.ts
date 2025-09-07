@@ -30,8 +30,8 @@ export const useAuthStore = create<AuthStore>()(
 
       // Actions
       login: (user: User, token: string) => {
-        // Store token in localStorage for API requests
-        localStorage.setItem("auth_token", token);
+        // Store token in sessionStorage for API requests
+        sessionStorage.setItem("auth_token", token);
 
         set({
           user,
@@ -42,8 +42,8 @@ export const useAuthStore = create<AuthStore>()(
       },
 
       logout: () => {
-        // Remove token from localStorage
-        localStorage.removeItem("auth_token");
+        // Remove token from sessionStorage
+        sessionStorage.removeItem("auth_token");
 
         set({
           user: null,
