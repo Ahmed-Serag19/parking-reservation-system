@@ -152,6 +152,11 @@ class ApiService {
       body: JSON.stringify(rates),
     });
   }
+
+  // Category Management (read-only)
+  async getCategories(): Promise<Category[]> {
+    return this.request<Category[]>("/master/categories");
+  }
 }
 
 // Export singleton instance

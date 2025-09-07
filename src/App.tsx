@@ -5,9 +5,11 @@ import { Toaster } from "react-hot-toast";
 import { LoginPage } from "./features/auth/components/login-page";
 import { AdminPage } from "./features/admin/components/admin-page";
 import { CheckpointPage } from "./features/checkpoint/components/checkpoint-page";
+import { GatePage } from "./features/gate/components/gate-page";
 import { NotFoundPage } from "./components/error/not-found-page";
 import { UnauthorizedPage } from "./components/error/unauthorized-page";
 import { ProtectedRoute } from "./components/auth/protected-route";
+import { AppLayout } from "./components/layout/app-layout";
 import "./App.css";
 
 // Create React Query client
@@ -32,7 +34,9 @@ function App() {
               path="/admin"
               element={
                 <ProtectedRoute allowedRoles={["admin"]}>
-                  <AdminPage />
+                  <AppLayout>
+                    <AdminPage />
+                  </AppLayout>
                 </ProtectedRoute>
               }
             />
@@ -40,7 +44,19 @@ function App() {
               path="/checkpoint"
               element={
                 <ProtectedRoute allowedRoles={["employee"]}>
-                  <CheckpointPage />
+                  <AppLayout>
+                    <CheckpointPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/gate/:gateId"
+              element={
+                <ProtectedRoute allowedRoles={["admin", "employee"]}>
+                  <AppLayout>
+                    <GatePage />
+                  </AppLayout>
                 </ProtectedRoute>
               }
             />
@@ -54,9 +70,11 @@ function App() {
             toastOptions={{
               duration: 4000,
               style: {
-                background: "hsl(var(--background))",
-                color: "hsl(var(--foreground))",
-                border: "1px solid hsl(var(--border))",
+                background: "#ffffff",
+                color: "#1f2937",
+                border: "1px solid #e5e7eb",
+                boxShadow:
+                  "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
               },
             }}
           />

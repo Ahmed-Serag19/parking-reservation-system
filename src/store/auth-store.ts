@@ -15,6 +15,7 @@ interface AuthActions {
   login: (user: User, token: string) => void;
   logout: () => void;
   setLoading: (loading: boolean) => void;
+  checkAuth: () => void;
 }
 
 type AuthStore = AuthState & AuthActions;
@@ -56,6 +57,29 @@ export const useAuthStore = create<AuthStore>()(
       setLoading: (loading: boolean) => {
         set({ isLoading: loading });
       },
+
+      // Check token validity on store initialization
+      checkAuth: () => {
+        const sessionToken = sessionStorage.getItem("auth_token");
+        const state = get();
+
+        // If sessionStorage has no token but store thinks we're authenticated, logout
+        if (!sessionToken && state.isAuthenticated) {
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+            isLoading: false,
+          });
+        }
+        // If sessionStorage has token but store doesn't, sync it
+        else if (sessionToken && !state.token) {
+          set({
+            token: sessionToken,
+            isAuthenticated: true,
+          });
+        }
+      },
     }),
     {
       name: "auth-storage",
@@ -65,6 +89,12 @@ export const useAuthStore = create<AuthStore>()(
         token: state.token,
         isAuthenticated: state.isAuthenticated,
       }),
+      // Check auth on rehydration
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.checkAuth();
+        }
+      },
     }
   )
 );

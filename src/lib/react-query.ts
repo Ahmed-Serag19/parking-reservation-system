@@ -7,6 +7,7 @@ import type {
   CheckinRequest,
   CheckoutRequest,
   Zone,
+  Category,
 } from "../types/api";
 
 // Query Keys
@@ -16,6 +17,7 @@ export const queryKeys = {
   subscription: (id: string) => ["subscription", id] as const,
   ticket: (id: string) => ["ticket", id] as const,
   parkingReport: ["admin", "parking-report"] as const,
+  categories: ["categories"] as const,
 } as const;
 
 // Auth Hooks
@@ -141,9 +143,18 @@ export const useUpdateCategoryRates = () => {
       rates: { rateNormal: number; rateSpecial: number };
     }) => api.updateCategoryRates(categoryId, rates),
     onSuccess: () => {
-      // Invalidate zone and parking report queries
+      // Invalidate categories, zones and parking report queries
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
       queryClient.invalidateQueries({ queryKey: ["zones"] });
       queryClient.invalidateQueries({ queryKey: queryKeys.parkingReport });
     },
+  });
+};
+
+// Category Hooks (read-only)
+export const useCategories = () => {
+  return useQuery({
+    queryKey: queryKeys.categories,
+    queryFn: () => api.getCategories(),
   });
 };
