@@ -3,6 +3,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { LoginPage } from "./features/auth/components/login-page";
+import { AdminPage } from "./features/admin/components/admin-page";
+import { CheckpointPage } from "./features/checkpoint/components/checkpoint-page";
 import "./App.css";
 
 // Create React Query client
@@ -23,7 +25,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<LoginPage />} />
-            {/* TODO: Add other routes (admin, checkpoint, etc.) */}
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/checkpoint" element={<CheckpointPage />} />
           </Routes>
 
           {/* Toast notifications */}
