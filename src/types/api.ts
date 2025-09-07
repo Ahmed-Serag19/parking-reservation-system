@@ -6,6 +6,14 @@ export interface User {
   role: "admin" | "employee";
 }
 
+export interface Category {
+  id: string;
+  name: string;
+  description: string;
+  rateNormal: number;
+  rateSpecial: number;
+}
+
 export interface Zone {
   id: string;
   name: string;
@@ -101,6 +109,21 @@ export interface LoginRequest {
 export interface LoginResponse {
   user: User;
   token: string;
+}
+
+// Category request/response types
+export interface CreateCategoryRequest {
+  name: string;
+  description: string;
+  rateNormal: number;
+  rateSpecial: number;
+}
+
+export interface UpdateCategoryRequest {
+  name?: string;
+  description?: string;
+  rateNormal?: number;
+  rateSpecial?: number;
 }
 
 export interface ApiError {
