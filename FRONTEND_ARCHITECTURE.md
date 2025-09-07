@@ -14,9 +14,7 @@ _The diagram above shows the overall system architecture, data flow, and compone
 
 ### 1. Framework Choice: React + Vite vs Next.js
 
-**Decision: React + Vite**
-Okin par
-**Rationale:**
+**Decision: React + Vite**:
 
 - **Internal Admin Tool**: This is not a public-facing website requiring SEO or server-side rendering
 - **Real-time Focus**: Heavy WebSocket usage is simpler in client-side applications
