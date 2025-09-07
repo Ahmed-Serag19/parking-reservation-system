@@ -5,6 +5,9 @@ import { Toaster } from "react-hot-toast";
 import { LoginPage } from "./features/auth/components/login-page";
 import { AdminPage } from "./features/admin/components/admin-page";
 import { CheckpointPage } from "./features/checkpoint/components/checkpoint-page";
+import { NotFoundPage } from "./components/error/not-found-page";
+import { UnauthorizedPage } from "./components/error/unauthorized-page";
+import { ProtectedRoute } from "./components/auth/protected-route";
 import "./App.css";
 
 // Create React Query client
@@ -25,8 +28,24 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/checkpoint" element={<CheckpointPage />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AdminPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/checkpoint"
+              element={
+                <ProtectedRoute allowedRoles={["employee"]}>
+                  <CheckpointPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
 
           {/* Toast notifications */}
