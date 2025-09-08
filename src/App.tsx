@@ -4,6 +4,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { LoginPage } from "./features/auth/components/login-page";
 import { AdminPage } from "./features/admin/components/admin-page";
+import { AdminParkingReportPage } from "./features/admin/components/admin-parking-report-page";
+import { AdminCategoryRatesPage } from "./features/admin/components/admin-category-rates-page";
+import { AdminZoneControlsPage } from "./features/admin/components/admin-zone-controls-page";
 import { CheckpointPage } from "./features/checkpoint/components/checkpoint-page";
 import { GatePage } from "./features/gate/components/gate-page";
 import { NotFoundPage } from "./components/error/not-found-page";
@@ -36,6 +39,36 @@ function App() {
                 <ProtectedRoute allowedRoles={["admin"]}>
                   <AppLayout>
                     <AdminPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/parking-report"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AppLayout>
+                    <AdminParkingReportPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/category-rates"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AppLayout>
+                    <AdminCategoryRatesPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/zone-controls"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AppLayout>
+                    <AdminZoneControlsPage />
                   </AppLayout>
                 </ProtectedRoute>
               }

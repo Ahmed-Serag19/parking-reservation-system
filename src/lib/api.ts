@@ -11,6 +11,11 @@ import type {
   CheckoutRequest,
   CheckoutResponse,
   ApiError,
+  User,
+  CreateEmployeeRequest,
+  CreateEmployeeResponse,
+  Category,
+  ParkingStateZone,
 } from "../types/api";
 
 const API_BASE_URL = "http://localhost:3000/api/v1";
@@ -131,27 +136,175 @@ class ApiService {
     return this.request<Ticket>(`/tickets/${id}`);
   }
 
-  // Admin endpoints (require authentication)
-  async getParkingStateReport(): Promise<Zone[]> {
-    return this.request<Zone[]>("/admin/reports/parking-state");
+  // ============================================
+  // ADMIN ENDPOINTS (require authentication)
+  // ============================================
+
+  // === Parking Reports ===
+  async getParkingStateReport(): Promise<ParkingStateZone[]> {
+    return this.request<ParkingStateZone[]>("/admin/reports/parking-state");
   }
 
-  async updateZoneStatus(zoneId: string, open: boolean): Promise<Zone> {
-    return this.request<Zone>(`/admin/zones/${zoneId}/open`, {
-      method: "PUT",
-      body: JSON.stringify({ open }),
+  // === Zone Management ===
+  // NOTE: Most zone CRUD endpoints are NOT IMPLEMENTED in the provided backend
+  // Only zone open/close is available
+  /*
+  async getAdminZones(): Promise<Zone[]> {
+    return this.request<Zone[]>("/admin/zones");
+  }
+
+  async createZone(zoneData: any): Promise<Zone> {
+    return this.request<Zone>("/admin/zones", {
+      method: "POST",
+      body: JSON.stringify(zoneData),
     });
+  }
+
+  async updateZone(zoneId: string, zoneData: any): Promise<Zone> {
+    return this.request<Zone>(`/admin/zones/${zoneId}`, {
+      method: "PUT",
+      body: JSON.stringify(zoneData),
+    });
+  }
+
+  async deleteZone(zoneId: string): Promise<void> {
+    return this.request<void>(`/admin/zones/${zoneId}`, {
+      method: "DELETE",
+    });
+  }
+  */
+
+  // This is the ONLY zone endpoint actually implemented in the backend
+  async updateZoneStatus(
+    zoneId: string,
+    open: boolean
+  ): Promise<{ zoneId: string; open: boolean }> {
+    return this.request<{ zoneId: string; open: boolean }>(
+      `/admin/zones/${zoneId}/open`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ open }),
+      }
+    );
+  }
+
+  // === Category Management ===
+  async getAdminCategories(): Promise<Category[]> {
+    return this.request<Category[]>("/admin/categories");
   }
 
   async updateCategoryRates(
     categoryId: string,
     rates: { rateNormal: number; rateSpecial: number }
-  ): Promise<any> {
-    return this.request(`/admin/categories/${categoryId}`, {
+  ): Promise<Category> {
+    return this.request<Category>(`/admin/categories/${categoryId}`, {
       method: "PUT",
       body: JSON.stringify(rates),
     });
   }
+
+  // === Gate Management ===
+  async getAdminGates(): Promise<Gate[]> {
+    return this.request<Gate[]>("/admin/gates");
+  }
+
+  // === Rush Hours Management ===
+  async getRushHours(): Promise<any[]> {
+    return this.request<any[]>("/admin/rush-hours");
+  }
+
+  async createRushHour(rushHourData: {
+    weekDay: number;
+    from: string;
+    to: string;
+  }): Promise<any> {
+    return this.request<any>("/admin/rush-hours", {
+      method: "POST",
+      body: JSON.stringify(rushHourData),
+    });
+  }
+
+  async updateRushHour(rushHourId: string, rushHourData: any): Promise<any> {
+    return this.request<any>(`/admin/rush-hours/${rushHourId}`, {
+      method: "PUT",
+      body: JSON.stringify(rushHourData),
+    });
+  }
+
+  async deleteRushHour(rushHourId: string): Promise<void> {
+    return this.request<void>(`/admin/rush-hours/${rushHourId}`, {
+      method: "DELETE",
+    });
+  }
+
+  // === Vacations Management ===
+  async getVacations(): Promise<any[]> {
+    return this.request<any[]>("/admin/vacations");
+  }
+
+  async createVacation(vacationData: {
+    name: string;
+    from: string;
+    to: string;
+  }): Promise<any> {
+    return this.request<any>("/admin/vacations", {
+      method: "POST",
+      body: JSON.stringify(vacationData),
+    });
+  }
+
+  async updateVacation(vacationId: string, vacationData: any): Promise<any> {
+    return this.request<any>(`/admin/vacations/${vacationId}`, {
+      method: "PUT",
+      body: JSON.stringify(vacationData),
+    });
+  }
+
+  async deleteVacation(vacationId: string): Promise<void> {
+    return this.request<void>(`/admin/vacations/${vacationId}`, {
+      method: "DELETE",
+    });
+  }
+
+  // === Subscription Management ===
+  async getAdminSubscriptions(): Promise<any[]> {
+    return this.request<any[]>("/admin/subscriptions");
+  }
+
+  async createSubscription(subscriptionData: any): Promise<any> {
+    return this.request<any>("/admin/subscriptions", {
+      method: "POST",
+      body: JSON.stringify(subscriptionData),
+    });
+  }
+
+  async updateSubscription(
+    subscriptionId: string,
+    subscriptionData: any
+  ): Promise<any> {
+    return this.request<any>(`/admin/subscriptions/${subscriptionId}`, {
+      method: "PUT",
+      body: JSON.stringify(subscriptionData),
+    });
+  }
+
+  // === Employee Management ===
+  // NOTE: These endpoints are NOT IMPLEMENTED in the provided backend
+  // Disabling for now until backend is updated
+  /*
+  async getEmployees(): Promise<User[]> {
+    return this.request<User[]>("/admin/users");
+  }
+
+  async createEmployee(
+    employeeData: CreateEmployeeRequest
+  ): Promise<CreateEmployeeResponse> {
+    return this.request<CreateEmployeeResponse>("/admin/users", {
+      method: "POST",
+      body: JSON.stringify(employeeData),
+    });
+  }
+  */
 
   // Category Management (read-only)
   async getCategories(): Promise<Category[]> {
