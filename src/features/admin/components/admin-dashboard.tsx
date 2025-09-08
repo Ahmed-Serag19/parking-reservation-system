@@ -12,7 +12,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { useAuthStore } from "../../../store/auth-store";
-import { useParkingStateReport } from "../../../lib/react-query";
+import { useParkingStateReport } from "../hooks/use-admin";
 import { AdminAuditLog } from "./admin-audit-log";
 import {
   Card,

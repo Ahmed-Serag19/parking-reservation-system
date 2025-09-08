@@ -5,7 +5,7 @@ import {
   useRushHours,
   useCreateRushHour,
   useDeleteRushHour,
-} from "../../../lib/react-query";
+} from "../hooks/use-admin";
 import {
   Card,
   CardContent,

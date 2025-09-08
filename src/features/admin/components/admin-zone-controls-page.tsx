@@ -1,4 +1,4 @@
-import { ArrowLeft, Settings2, MapPin, AlertCircle } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "../../../components/ui/button";
 import { ZoneControls } from "./zone-controls";
@@ -9,7 +9,11 @@ export function AdminZoneControlsPage() {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center gap-4 mb-6">
           <Link to="/admin">
-            <Button variant="ghost" size="sm" className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="flex items-center gap-2"
+            >
               <ArrowLeft className="h-4 w-4" />
               Back to Dashboard
             </Button>
@@ -21,7 +25,7 @@ export function AdminZoneControlsPage() {
             </p>
           </div>
         </div>
-        
+
         <ZoneControls />
       </div>
     </div>

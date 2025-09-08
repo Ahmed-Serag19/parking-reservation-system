@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../../components/ui/button";
 import { ChevronLeft, Users } from "lucide-react";
-import { useEmployees, useCreateEmployee } from "../../../lib/react-query";
+import { useEmployees, useCreateEmployee } from "../hooks/use-admin";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {

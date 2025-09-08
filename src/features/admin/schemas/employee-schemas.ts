@@ -23,9 +23,7 @@ export const createEmployeeSchema = z.object({
 
   email: z.string().email("Please enter a valid email address").optional(),
 
-  role: z.enum(["admin", "employee"], {
-    required_error: "Please select a role",
-  }),
+  role: z.enum(["admin", "employee"]),
 });
 
 export type CreateEmployeeFormData = z.infer<typeof createEmployeeSchema>;

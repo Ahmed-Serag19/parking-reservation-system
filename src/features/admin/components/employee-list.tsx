@@ -1,5 +1,5 @@
 import { Users, UserPlus, Shield, User } from "lucide-react";
-import { useEmployees } from "../../../lib/react-query";
+import { useEmployees } from "../hooks/use-admin";
 import {
   Card,
   CardContent,

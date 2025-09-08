@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../../../components/ui/card";
 import { websocket } from "../../../lib/websocket";
-import { useGates } from "../../../lib/react-query";
+import { useGates } from "../../visitor/hooks/use-visitor";
 import type { AdminUpdateMessage } from "../../../types/api";
 import { ScrollArea } from "../../../components/ui/scroll-area";
 

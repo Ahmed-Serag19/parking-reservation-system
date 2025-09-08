@@ -17,7 +17,7 @@ import { Loader2, Save } from "lucide-react";
 import {
   useCategories,
   useUpdateCategoryRates,
-} from "../../../lib/react-query";
+} from "../hooks/use-admin";
 
 const rateUpdateSchema = z.object({
   rateNormal: z

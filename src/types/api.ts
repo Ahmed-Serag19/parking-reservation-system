@@ -18,7 +18,7 @@ export interface Category {
 }
 
 export interface Zone {
-  id: string;
+  zoneId: string;
   name: string;
   categoryId: string;
   gateIds: string[];
@@ -166,7 +166,7 @@ export interface ApiError {
 // WebSocket Message Types
 export interface WSMessage {
   type: "zone-update" | "admin-update";
-  payload: any;
+  payload: Zone | AdminUpdateMessage["payload"];
 }
 
 export interface ZoneUpdateMessage {
@@ -181,7 +181,7 @@ export interface AdminUpdateMessage {
     action: string;
     targetType: string;
     targetId: string;
-    details?: any;
+    details?: Record<string, unknown>;
     timestamp: string;
   };
 }

@@ -8,7 +8,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { useAdminZones, useUpdateZoneStatus } from "../../../lib/react-query";
+import { useAdminZones, useUpdateZoneStatus } from "../hooks/use-admin";
 import {
   Card,
   CardContent,
@@ -17,6 +17,7 @@ import {
   CardTitle,
 } from "../../../components/ui/card";
 import { Switch } from "../../../components/ui/switch";
+import type { Zone } from "@/types/api";
 
 export function ZoneControls() {
   const { data: zones = [], isLoading, error } = useAdminZones();
@@ -134,7 +135,7 @@ export function ZoneControls() {
           </div>
         ) : (
           <div className="space-y-4">
-            {zones.map((zone) => {
+            {zones.map((zone: Zone) => {
               const isUpdating = updatingZones.has(zone.zoneId);
 
               return (

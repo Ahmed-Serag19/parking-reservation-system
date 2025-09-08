@@ -31,7 +31,7 @@ export const createMockLogin = (
   shouldSucceed = true,
   response = mockLoginSuccess
 ) => {
-  return vi.fn().mockImplementation((credentials: LoginRequest) => {
+  return vi.fn().mockImplementation((_credentials: LoginRequest) => {
     if (shouldSucceed) {
       return Promise.resolve(response);
     } else {

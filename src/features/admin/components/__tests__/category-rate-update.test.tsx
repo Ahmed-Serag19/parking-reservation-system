@@ -3,10 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 import { toast } from "react-hot-toast";
 import { CategoryRateUpdate } from "../category-rate-update";
-import {
-  useCategories,
-  useUpdateCategoryRates,
-} from "../../../../lib/react-query";
+import { useCategories } from "../../../../lib/react-query";
+import { useUpdateCategoryRates } from "../../hooks/use-admin";
 
 // Mock react-hot-toast
 vi.mock("react-hot-toast", () => ({

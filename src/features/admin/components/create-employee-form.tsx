@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-hot-toast";
 import { Eye, EyeOff, UserPlus, X } from "lucide-react";
-import { useCreateEmployee } from "../../../lib/react-query";
+import { useCreateEmployee } from "../hooks/use-admin";
 import {
   createEmployeeSchema,
   type CreateEmployeeFormData,

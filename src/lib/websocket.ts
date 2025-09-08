@@ -15,7 +15,11 @@ class WebSocketManager {
   private listeners = new Map<string, ((data: any) => void)[]>();
   private isConnecting = false;
 
-  constructor(private url: string = "ws://localhost:3000/api/v1/ws") {}
+  private url: string;
+
+  constructor(url: string = "ws://localhost:3000/api/v1/ws") {
+    this.url = url;
+  }
 
   connect(): Promise<void> {
     if (this.ws?.readyState === WebSocket.OPEN || this.isConnecting) {

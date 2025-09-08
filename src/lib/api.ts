@@ -10,7 +10,6 @@ import type {
   Ticket,
   CheckoutRequest,
   CheckoutResponse,
-  ApiError,
   User,
   CreateEmployeeRequest,
   CreateEmployeeResponse,
@@ -21,13 +20,18 @@ import type {
 const API_BASE_URL = "http://localhost:3000/api/v1";
 
 class ApiError extends Error {
+  public status: number;
+  public errors?: Record<string, string[]>;
+
   constructor(
-    public status: number,
+    status: number,
     message: string,
-    public errors?: Record<string, string[]>
+    errors?: Record<string, string[]>
   ) {
     super(message);
     this.name = "ApiError";
+    this.status = status;
+    this.errors = errors;
   }
 }
 
@@ -311,4 +315,4 @@ class ApiService {
 
 // Export singleton instance
 export const api = new ApiService();
-export { ApiError };
+export type { ApiError };

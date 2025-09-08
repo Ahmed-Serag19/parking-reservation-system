@@ -10,8 +10,8 @@ import { AdminZoneControlsPage } from "./features/admin/components/admin-zone-co
 import { AdminUsersPage } from "./features/admin/components/admin-users-page";
 import { AdminRushHoursPage } from "./features/admin/components/admin-rush-hours-page";
 import { AdminVacationsPage } from "./features/admin/components/admin-vacations-page";
-import { CheckpointPage } from "./features/checkpoint/components/checkpoint-page";
-import { GatePage } from "./features/gate/components/gate-page";
+import { CheckpointPage } from "./features/employee/components/checkpoint-page";
+import { GatePage } from "./features/visitor/components/gate-page";
 import { NotFoundPage } from "./components/error/not-found-page";
 import { UnauthorizedPage } from "./components/error/unauthorized-page";
 import { ProtectedRoute } from "./components/auth/protected-route";

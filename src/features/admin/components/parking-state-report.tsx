@@ -1,14 +1,12 @@
 import {
   BarChart3,
-  Users,
   Car,
   MapPin,
   AlertCircle,
   CheckCircle2,
-  XCircle,
   Clock,
 } from "lucide-react";
-import { useParkingStateReport } from "../../../lib/react-query";
+import { useParkingStateReport } from "../hooks/use-admin";
 import {
   Card,
   CardContent,
@@ -172,7 +170,7 @@ export function ParkingStateReport() {
           <div className="space-y-2">
             {zones.map((zone) => (
               <div
-                key={zone.id}
+                key={zone.zoneId}
                 className="p-4 border rounded-lg hover:bg-accent/50 transition-colors"
               >
                 <div className="flex items-center justify-between mb-3">
@@ -184,7 +182,7 @@ export function ParkingStateReport() {
                     />
                     <h4 className="font-medium">{zone.name}</h4>
                     <span className="text-xs bg-muted px-2 py-1 rounded">
-                      {zone.id}
+                      {zone.zoneId}
                     </span>
                     {!zone.open && (
                       <span className="text-xs bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-200 px-2 py-1 rounded">
@@ -224,11 +222,11 @@ export function ParkingStateReport() {
                   </div>
                   <div>
                     <span className="text-muted-foreground">Normal Rate</span>
-                    <p className="font-medium">${zone.rateNormal}/hr</p>
+                    <p className="font-medium">Rates vary by category</p>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Special Rate</span>
-                    <p className="font-medium">${zone.rateSpecial}/hr</p>
+                    <p className="font-medium">Rates vary by category</p>
                   </div>
                 </div>
 
