@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../../../components/ui/card";
 import { Badge } from "../../../components/ui/badge";
-import { DollarSign, Clock, Loader2 } from "lucide-react";
+import { DollarSign, Clock } from "lucide-react";
 
 interface PublicCategoriesDisplayProps {
   selectedCategoryId?: string;

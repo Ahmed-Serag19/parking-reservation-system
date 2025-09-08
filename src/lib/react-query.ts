@@ -136,7 +136,11 @@ export const useUpdateCategoryRates = () => {
       // Invalidate categories, zones and parking report queries
       queryClient.invalidateQueries({ queryKey: ["categories"] });
       queryClient.invalidateQueries({ queryKey: ["zones"] });
+      // Invalidate both historical and current parking-report keys used across tests/components
       queryClient.invalidateQueries({ queryKey: queryKeys.parkingReport });
+      queryClient.invalidateQueries({
+        queryKey: ["admin", "parking-state-report"],
+      });
     },
   });
 };
