@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "../../../components/ui/card";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 type VacationForm = { name: string; from: string; to: string };
 
@@ -27,8 +28,13 @@ export function AdminVacationsPage() {
   });
 
   const onSubmit = async (values: VacationForm) => {
-    await createVacation.mutateAsync(values);
-    reset({ name: "", from: "", to: "" });
+    try {
+      await createVacation.mutateAsync(values);
+      toast.success("Vacation added successfully!");
+      reset({ name: "", from: "", to: "" });
+    } catch (error) {
+      toast.error("Failed to add vacation");
+    }
   };
 
   return (

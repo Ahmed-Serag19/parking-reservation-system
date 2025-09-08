@@ -29,7 +29,7 @@ class WebSocketManager {
         this.ws = new WebSocket(this.url);
 
         this.ws.onopen = () => {
-          console.log("WebSocket connected");
+          console.log("WebSocket connected to:", this.url);
           this.isConnecting = false;
           this.reconnectAttempts = 0;
           this.reconnectInterval = 1000;
@@ -90,6 +90,7 @@ class WebSocketManager {
   }
 
   subscribeToGate(gateId: string) {
+    console.log("Subscribing to gate:", gateId);
     this.subscriptions.add(gateId);
     this.send({
       type: "subscribe",
@@ -114,6 +115,7 @@ class WebSocketManager {
   }
 
   private handleMessage(message: WSMessage) {
+    console.log("WebSocket message received:", message);
     const listeners = this.listeners.get(message.type) || [];
     listeners.forEach((listener) => {
       try {
@@ -161,6 +163,10 @@ class WebSocketManager {
 
   get isConnected(): boolean {
     return this.ws?.readyState === WebSocket.OPEN;
+  }
+
+  get subscriptionCount(): number {
+    return this.subscriptions.size;
   }
 }
 

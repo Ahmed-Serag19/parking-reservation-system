@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "../../../components/ui/card";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 type RushForm = { weekDay: number; from: string; to: string };
 
@@ -27,8 +28,13 @@ export function AdminRushHoursPage() {
   });
 
   const onSubmit = async (values: RushForm) => {
-    await createRush.mutateAsync(values);
-    reset({ weekDay: 1, from: "07:00", to: "09:00" });
+    try {
+      await createRush.mutateAsync(values);
+      toast.success("Rush hour added successfully!");
+      reset({ weekDay: 1, from: "07:00", to: "09:00" });
+    } catch (error) {
+      toast.error("Failed to add rush hour");
+    }
   };
 
   return (

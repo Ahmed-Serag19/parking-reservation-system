@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useAuthStore } from "../../../store/auth-store";
 import { useParkingStateReport } from "../../../lib/react-query";
+import { AdminAuditLog } from "./admin-audit-log";
 import {
   Card,
   CardContent,
@@ -249,30 +250,29 @@ export function AdminDashboard() {
             </Card>
           </Link>
 
-          {/* Employee Management - Disabled */}
-          <Card className="opacity-60 cursor-not-allowed h-full">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-gray-100 dark:bg-gray-900/20 rounded-lg">
-                  <Users className="h-6 w-6 text-gray-500" />
+          <Link to="/admin/users">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-green-100 dark:bg-green-900/20 rounded-lg">
+                    <Users className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg">
+                      Employee Management
+                    </CardTitle>
+                    <CardDescription>Manage employee accounts</CardDescription>
+                  </div>
                 </div>
-                <div>
-                  <CardTitle className="text-lg text-gray-500">
-                    Employee Management
-                  </CardTitle>
-                  <CardDescription>
-                    Manage employee accounts (Coming Soon)
-                  </CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Backend endpoints not yet implemented. Will enable user account
-                management.
-              </p>
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Create and manage employee accounts with role-based access
+                  control.
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
 
         <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
@@ -281,6 +281,11 @@ export function AdminDashboard() {
             for that area.
           </p>
         </div>
+      </div>
+
+      {/* Live Admin Audit Log */}
+      <div className="mt-8">
+        <AdminAuditLog />
       </div>
     </div>
   );
