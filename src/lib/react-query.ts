@@ -20,6 +20,7 @@ export const queryKeys = {
   ticket: (id: string) => ["ticket", id] as const,
   parkingReport: ["admin", "parking-report"] as const,
   categories: ["categories"] as const,
+  employees: ["employees"] as const,
 } as const;
 
 // Auth Hooks
@@ -154,11 +155,9 @@ export const useCategories = () => {
 };
 
 // Employee Management Hooks
-// NOTE: Disabled until backend implements /admin/users endpoints
-/*
 export const useEmployees = () => {
   return useQuery({
-    queryKey: ["employees"],
+    queryKey: queryKeys.employees,
     queryFn: () => api.getEmployees(),
   });
 };
@@ -167,15 +166,14 @@ export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (employeeData: CreateEmployeeRequest) => 
+    mutationFn: (employeeData: CreateEmployeeRequest) =>
       api.createEmployee(employeeData),
     onSuccess: () => {
       // Invalidate employees list to refetch
-      queryClient.invalidateQueries({ queryKey: ["employees"] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.employees });
     },
   });
 };
-*/
 
 // Parking State Report Hook
 export const useParkingStateReport = () => {

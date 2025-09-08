@@ -7,6 +7,8 @@ import { AdminPage } from "./features/admin/components/admin-page";
 import { AdminParkingReportPage } from "./features/admin/components/admin-parking-report-page";
 import { AdminCategoryRatesPage } from "./features/admin/components/admin-category-rates-page";
 import { AdminZoneControlsPage } from "./features/admin/components/admin-zone-controls-page";
+import { AdminUsersPage } from "./features/admin/components/admin-users-page";
+import { AdminRushHoursPage } from "./features/admin/components/admin-rush-hours-page";
 import { CheckpointPage } from "./features/checkpoint/components/checkpoint-page";
 import { GatePage } from "./features/gate/components/gate-page";
 import { NotFoundPage } from "./components/error/not-found-page";
@@ -69,6 +71,26 @@ function App() {
                 <ProtectedRoute allowedRoles={["admin"]}>
                   <AppLayout>
                     <AdminZoneControlsPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/users"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AppLayout>
+                    <AdminUsersPage />
+                  </AppLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/rush-hours"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AppLayout>
+                    <AdminRushHoursPage />
                   </AppLayout>
                 </ProtectedRoute>
               }
