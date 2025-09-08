@@ -16,7 +16,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
-import { Button } from "../../../components/ui/button";
 import { Switch } from "../../../components/ui/switch";
 
 export function ZoneControls() {
@@ -36,15 +35,18 @@ export function ZoneControls() {
         open: newStatus,
       });
 
-      toast.success(`Zone ${newStatus ? "opened" : "closed"} successfully`, {
-        style: {
-          background: "#ffffff",
-          color: "#1f2937",
-          border: "1px solid #e5e7eb",
-          boxShadow:
-            "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-        },
-      });
+      toast.success(
+        `Zone named ${zoneId} ${newStatus ? "opened" : "closed"} successfully`,
+        {
+          style: {
+            background: "#ffffff",
+            color: "#1f2937",
+            border: "1px solid #e5e7eb",
+            boxShadow:
+              "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+          },
+        }
+      );
     } catch (error) {
       toast.error(`Failed to ${newStatus ? "open" : "close"} zone`, {
         style: {
@@ -150,9 +152,6 @@ export function ZoneControls() {
                       <div>
                         <h4 className="font-medium flex items-center gap-2">
                           {zone.name}
-                          <span className="text-xs bg-muted px-2 py-1 rounded">
-                            {zone.zoneId}
-                          </span>
                         </h4>
                         <div className="text-sm text-muted-foreground">
                           <span className="flex items-center gap-4">

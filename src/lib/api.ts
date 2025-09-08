@@ -289,9 +289,7 @@ class ApiService {
   }
 
   // === Employee Management ===
-  // NOTE: These endpoints are NOT IMPLEMENTED in the provided backend
-  // Disabling for now until backend is updated
-  /*
+  // NOTE: Exposing for testing; backend might return 404 if not implemented
   async getEmployees(): Promise<User[]> {
     return this.request<User[]>("/admin/users");
   }
@@ -304,7 +302,6 @@ class ApiService {
       body: JSON.stringify(employeeData),
     });
   }
-  */
 
   // Category Management (read-only)
   async getCategories(): Promise<Category[]> {
