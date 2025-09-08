@@ -8,6 +8,8 @@ import type {
   CheckoutRequest,
   Zone,
   Category,
+  CreateEmployeeRequest,
+  ParkingStateZone,
 } from "../types/api";
 
 // Query Keys
@@ -117,19 +119,7 @@ export const useParkingReport = () => {
   });
 };
 
-export const useUpdateZoneStatus = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ zoneId, open }: { zoneId: string; open: boolean }) =>
-      api.updateZoneStatus(zoneId, open),
-    onSuccess: () => {
-      // Invalidate all zone-related queries
-      queryClient.invalidateQueries({ queryKey: ["zones"] });
-      queryClient.invalidateQueries({ queryKey: queryKeys.parkingReport });
-    },
-  });
-};
+// Removed duplicate - using the newer version below
 
 export const useUpdateCategoryRates = () => {
   const queryClient = useQueryClient();
@@ -156,5 +146,129 @@ export const useCategories = () => {
   return useQuery({
     queryKey: queryKeys.categories,
     queryFn: () => api.getCategories(),
+  });
+};
+
+// Employee Management Hooks
+// NOTE: Disabled until backend implements /admin/users endpoints
+/*
+export const useEmployees = () => {
+  return useQuery({
+    queryKey: ["employees"],
+    queryFn: () => api.getEmployees(),
+  });
+};
+
+export const useCreateEmployee = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (employeeData: CreateEmployeeRequest) => 
+      api.createEmployee(employeeData),
+    onSuccess: () => {
+      // Invalidate employees list to refetch
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+    },
+  });
+};
+*/
+
+// Parking State Report Hook
+export const useParkingStateReport = () => {
+  return useQuery({
+    queryKey: ["admin", "parking-state-report"],
+    queryFn: () => api.getParkingStateReport(),
+    refetchInterval: 30000, // Refresh every 30 seconds for real-time data
+    staleTime: 0, // Always consider data stale to ensure fresh updates
+  });
+};
+
+// Zone Management Hooks
+// NOTE: Using parking state report data since GET /admin/zones is not implemented
+export const useAdminZones = () => {
+  return useQuery({
+    queryKey: ["admin", "parking-state-report"],
+    queryFn: () => api.getParkingStateReport(),
+    refetchInterval: 30000, // Refresh every 30 seconds for real-time data
+    staleTime: 0, // Always consider data stale to ensure fresh updates
+  });
+};
+
+export const useUpdateZoneStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ zoneId, open }: { zoneId: string; open: boolean }) =>
+      api.updateZoneStatus(zoneId, open),
+    onSuccess: () => {
+      // Force refetch all zone-related queries immediately
+      queryClient.refetchQueries({ queryKey: ["admin", "zones"] });
+      queryClient.refetchQueries({
+        queryKey: ["admin", "parking-state-report"],
+      });
+      queryClient.refetchQueries({ queryKey: ["zones"] });
+    },
+  });
+};
+
+// Rush Hours Management Hooks
+export const useRushHours = () => {
+  return useQuery({
+    queryKey: ["admin", "rush-hours"],
+    queryFn: () => api.getRushHours(),
+  });
+};
+
+export const useCreateRushHour = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (rushHourData: { weekDay: number; from: string; to: string }) =>
+      api.createRushHour(rushHourData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "rush-hours"] });
+    },
+  });
+};
+
+export const useDeleteRushHour = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (rushHourId: string) => api.deleteRushHour(rushHourId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "rush-hours"] });
+    },
+  });
+};
+
+// Vacations Management Hooks
+export const useVacations = () => {
+  return useQuery({
+    queryKey: ["admin", "vacations"],
+    queryFn: () => api.getVacations(),
+  });
+};
+
+export const useCreateVacation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (vacationData: { name: string; from: string; to: string }) =>
+      api.createVacation(vacationData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "vacations"] });
+    },
+  });
+};
+
+export const useDeleteVacation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (vacationId: string) => api.deleteVacation(vacationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "vacations"] });
+    },
   });
 };

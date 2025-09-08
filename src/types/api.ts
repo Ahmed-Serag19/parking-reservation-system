@@ -4,6 +4,9 @@ export interface User {
   id: string;
   username: string;
   role: "admin" | "employee";
+  name?: string;
+  email?: string;
+  createdAt?: string;
 }
 
 export interface Category {
@@ -27,6 +30,20 @@ export interface Zone {
   availableForSubscribers: number;
   rateNormal: number;
   rateSpecial: number;
+  open: boolean;
+}
+
+// Parking state report returns zones with different field names
+export interface ParkingStateZone {
+  zoneId: string;
+  name: string;
+  totalSlots: number;
+  occupied: number;
+  free: number;
+  reserved: number;
+  availableForVisitors: number;
+  availableForSubscribers: number;
+  subscriberCount: number;
   open: boolean;
 }
 
@@ -109,6 +126,20 @@ export interface LoginRequest {
 export interface LoginResponse {
   user: User;
   token: string;
+}
+
+// Employee Management
+export interface CreateEmployeeRequest {
+  username: string;
+  password: string;
+  name?: string;
+  email?: string;
+  role: "admin" | "employee";
+}
+
+export interface CreateEmployeeResponse {
+  user: User;
+  message: string;
 }
 
 // Category request/response types
