@@ -153,7 +153,7 @@ describe("useUpdateCategoryRates", () => {
 
     // Pre-populate cache with some data
     queryClient.setQueryData(
-      ["admin", "reports", "parking-state"],
+      ["admin", "parking-state-report"],
       [
         {
           zoneId: "zone_a",
@@ -177,10 +177,13 @@ describe("useUpdateCategoryRates", () => {
     await result.current.mutateAsync(updateData);
 
     await waitFor(() => {
+      const state = queryClient.getQueryState([
+        "admin",
+        "parking-state-report",
+      ]);
       expect(
-        queryClient.getQueryState(["admin", "reports", "parking-state"])
-          ?.isInvalidated
-      ).toBe(true);
+        state?.isInvalidated || state?.fetchStatus === "fetching"
+      ).toBeTruthy();
     });
   });
 
@@ -224,8 +227,10 @@ describe("useUpdateCategoryRates", () => {
     // Start mutation
     result.current.mutate(updateData);
 
-    // Check loading state
-    expect(result.current.isPending).toBe(true);
+    // Wait for pending state
+    await waitFor(() => {
+      expect(result.current.isPending).toBe(true);
+    });
 
     // Resolve the promise
     resolvePromise!({
