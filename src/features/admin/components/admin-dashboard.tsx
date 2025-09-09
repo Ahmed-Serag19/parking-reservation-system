@@ -42,16 +42,21 @@ export function AdminDashboard() {
     totals.totalSlots > 0 ? (totals.occupied / totals.totalSlots) * 100 : 0;
 
   return (
-    <div className="p-8">
+    <div className="p-3 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold">Admin Dashboard</h1>
+            <p className="text-sm sm:text-base text-muted-foreground mt-1 sm:mt-0">
+              Welcome back, {user?.username}! (Role: {user?.role})
+            </p>
+          </div>
           <Button
             variant="outline"
             size="sm"
             onClick={() => refetch()}
             disabled={isFetching}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 w-full sm:w-auto"
           >
             <RefreshCw
               className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`}
@@ -59,42 +64,45 @@ export function AdminDashboard() {
             Refresh
           </Button>
         </div>
-        <p className="text-muted-foreground mb-8">
-          Welcome back, {user?.username}! (Role: {user?.role})
-        </p>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-                  <MapPin className="h-5 w-5 text-blue-600" />
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Total Parking Slots
                   </p>
-                  <p className="text-2xl font-bold">{totals.totalSlots}</p>
-                  <p className="text-xs text-blue-600">across all zones</p>
+                  <p className="text-xl sm:text-2xl font-bold">
+                    {totals.totalSlots}
+                  </p>
+                  <p className="text-xs text-blue-600 truncate">
+                    across all zones
+                  </p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-red-100 dark:bg-red-900/20 rounded-lg">
-                  <Car className="h-5 w-5 text-red-600" />
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-red-100 dark:bg-red-900/20 rounded-lg">
+                  <Car className="h-4 w-4 sm:h-5 sm:w-5 text-red-600" />
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Occupied Slots
                   </p>
-                  <p className="text-2xl font-bold">{totals.occupied}</p>
-                  <p className="text-xs text-red-600">
-                    {occupancyRate.toFixed(1)}% of total capacity
+                  <p className="text-xl sm:text-2xl font-bold">
+                    {totals.occupied}
+                  </p>
+                  <p className="text-xs text-red-600 truncate">
+                    {occupancyRate.toFixed(1)}% capacity
                   </p>
                 </div>
               </div>
@@ -102,30 +110,42 @@ export function AdminDashboard() {
           </Card>
 
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
-                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
+                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Open Zones</p>
-                  <p className="text-2xl font-bold">{totals.openZones}</p>
-                  <p className="text-xs text-green-600">accepting vehicles</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    Open Zones
+                  </p>
+                  <p className="text-xl sm:text-2xl font-bold">
+                    {totals.openZones}
+                  </p>
+                  <p className="text-xs text-green-600 truncate">
+                    accepting vehicles
+                  </p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-amber-100 dark:bg-amber-900/20 rounded-lg">
-                  <AlertTriangle className="h-5 w-5 text-amber-600" />
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-amber-100 dark:bg-amber-900/20 rounded-lg">
+                  <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600" />
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Closed Zones</p>
-                  <p className="text-2xl font-bold">{totals.closedZones}</p>
-                  <p className="text-xs text-amber-600">maintenance/offline</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    Closed Zones
+                  </p>
+                  <p className="text-xl sm:text-2xl font-bold">
+                    {totals.closedZones}
+                  </p>
+                  <p className="text-xs text-amber-600 truncate">
+                    maintenance/offline
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -133,24 +153,26 @@ export function AdminDashboard() {
         </div>
 
         {/* Navigation Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           <Link to="/admin/parking-report">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-                    <BarChart3 className="h-6 w-6 text-blue-600" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="p-2 sm:p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+                    <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
                   </div>
-                  <div>
-                    <CardTitle className="text-lg">Parking Reports</CardTitle>
-                    <CardDescription>
+                  <div className="min-w-0 flex-1">
+                    <CardTitle className="text-base sm:text-lg">
+                      Parking Reports
+                    </CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">
                       Real-time parking state and occupancy
                     </CardDescription>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
+              <CardContent className="pt-0">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   View detailed zone occupancy, availability, and live updates
                   across all parking areas.
                 </p>
@@ -160,21 +182,23 @@ export function AdminDashboard() {
 
           <Link to="/admin/zone-controls">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-green-100 dark:bg-green-900/20 rounded-lg">
-                    <Settings2 className="h-6 w-6 text-green-600" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="p-2 sm:p-3 bg-green-100 dark:bg-green-900/20 rounded-lg">
+                    <Settings2 className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
                   </div>
-                  <div>
-                    <CardTitle className="text-lg">Zone Controls</CardTitle>
-                    <CardDescription>
+                  <div className="min-w-0 flex-1">
+                    <CardTitle className="text-base sm:text-lg">
+                      Zone Controls
+                    </CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">
                       Open/close zones and manage capacity
                     </CardDescription>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
+              <CardContent className="pt-0">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Control zone status, capacity management, and operational
                   settings.
                 </p>
@@ -184,21 +208,23 @@ export function AdminDashboard() {
 
           <Link to="/admin/category-rates">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
-                    <Settings2 className="h-6 w-6 text-purple-600" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="p-2 sm:p-3 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
+                    <Settings2 className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
                   </div>
-                  <div>
-                    <CardTitle className="text-lg">Category Rates</CardTitle>
-                    <CardDescription>
+                  <div className="min-w-0 flex-1">
+                    <CardTitle className="text-base sm:text-lg">
+                      Category Rates
+                    </CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">
                       Update pricing for parking categories
                     </CardDescription>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
+              <CardContent className="pt-0">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Manage normal and special rates for Premium, Regular, and
                   other categories.
                 </p>
@@ -208,19 +234,23 @@ export function AdminDashboard() {
 
           <Link to="/admin/rush-hours">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-amber-100 dark:bg-amber-900/20 rounded-lg">
-                    <Clock className="h-6 w-6 text-amber-600" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="p-2 sm:p-3 bg-amber-100 dark:bg-amber-900/20 rounded-lg">
+                    <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600" />
                   </div>
-                  <div>
-                    <CardTitle className="text-lg">Rush Hours</CardTitle>
-                    <CardDescription>Manage peak time periods</CardDescription>
+                  <div className="min-w-0 flex-1">
+                    <CardTitle className="text-base sm:text-lg">
+                      Rush Hours
+                    </CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">
+                      Manage peak time periods
+                    </CardDescription>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
+              <CardContent className="pt-0">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Configure rush hour windows when special rates apply across
                   all zones.
                 </p>
@@ -230,19 +260,23 @@ export function AdminDashboard() {
 
           <Link to="/admin/vacations">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-red-100 dark:bg-red-900/20 rounded-lg">
-                    <Calendar className="h-6 w-6 text-red-600" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="p-2 sm:p-3 bg-red-100 dark:bg-red-900/20 rounded-lg">
+                    <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
                   </div>
-                  <div>
-                    <CardTitle className="text-lg">Vacations</CardTitle>
-                    <CardDescription>Manage vacation periods</CardDescription>
+                  <div className="min-w-0 flex-1">
+                    <CardTitle className="text-base sm:text-lg">
+                      Vacations
+                    </CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">
+                      Manage vacation periods
+                    </CardDescription>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
+              <CardContent className="pt-0">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Set vacation dates when special holiday rates apply
                   system-wide.
                 </p>
@@ -252,21 +286,23 @@ export function AdminDashboard() {
 
           <Link to="/admin/users">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-green-100 dark:bg-green-900/20 rounded-lg">
-                    <Users className="h-6 w-6 text-green-600" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="p-2 sm:p-3 bg-green-100 dark:bg-green-900/20 rounded-lg">
+                    <Users className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
                   </div>
-                  <div>
-                    <CardTitle className="text-lg">
+                  <div className="min-w-0 flex-1">
+                    <CardTitle className="text-base sm:text-lg">
                       Employee Management
                     </CardTitle>
-                    <CardDescription>Manage employee accounts</CardDescription>
+                    <CardDescription className="text-xs sm:text-sm">
+                      Manage employee accounts
+                    </CardDescription>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
+              <CardContent className="pt-0">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Create and manage employee accounts with role-based access
                   control.
                 </p>
@@ -275,8 +311,8 @@ export function AdminDashboard() {
           </Link>
         </div>
 
-        <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-          <p className="text-sm text-blue-800 dark:text-blue-200">
+        <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+          <p className="text-xs sm:text-sm text-blue-800 dark:text-blue-200">
             💡 Click on any card above to access detailed management features
             for that area.
           </p>
@@ -284,7 +320,7 @@ export function AdminDashboard() {
       </div>
 
       {/* Live Admin Audit Log */}
-      <div className="mt-8">
+      <div className="mt-6 sm:mt-8">
         <AdminAuditLog />
       </div>
     </div>

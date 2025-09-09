@@ -2,6 +2,13 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../store/auth-store";
 import { Button } from "../ui/button";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import {
   Car,
   LogOut,
   User,
@@ -9,8 +16,10 @@ import {
   BarChart3,
   Settings2,
   DollarSign,
+  Menu,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
+import { cn } from "../../lib/utils";
 
 export function Navbar() {
   const navigate = useNavigate();
@@ -25,109 +34,135 @@ export function Navbar() {
 
   if (!user) return null;
 
+  // Helper function to get navigation items based on user role
+  const getNavigationItems = () => {
+    const items = [];
+
+    if (user.role === "admin") {
+      items.push(
+        { to: "/admin", icon: Settings, label: "Dashboard" },
+        { to: "/admin/parking-report", icon: BarChart3, label: "Reports" },
+        { to: "/admin/zone-controls", icon: Settings2, label: "Zones" },
+        { to: "/admin/category-rates", icon: DollarSign, label: "Rates" }
+      );
+    }
+
+    if (user.role === "employee") {
+      items.push({ to: "/checkpoint", icon: Car, label: "Checkpoint" });
+    }
+
+    return items;
+  };
+
+  const navigationItems = getNavigationItems();
+
   return (
     <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Brand */}
           <Link to="/admin" className="cursor-pointer">
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center space-x-2">
-                <Car className="h-8 w-8 text-blue-600" />
-                <span className="text-xl font-bold text-gray-900 dark:text-white">
-                  Parking System
-                </span>
-              </div>
+            <div className="flex items-center space-x-2">
+              <Car className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+              <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                <span className="hidden sm:inline">Parking System</span>
+                <span className="sm:hidden">Parking</span>
+              </span>
             </div>
           </Link>
 
-          {/* Navigation Links */}
-          <div className="flex items-center space-x-4">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-4">
             {/* Navigation Buttons */}
             <div className="flex items-center space-x-1">
-              {user.role === "admin" && (
-                <>
+              {navigationItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = location.pathname === item.to;
+                return (
                   <Link
-                    to="/admin"
-                    className={`cursor-pointer px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center space-x-1 ${
-                      location.pathname === "/admin"
+                    key={item.to}
+                    to={item.to}
+                    className={cn(
+                      "cursor-pointer px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center space-x-1",
+                      isActive
                         ? "bg-gray-100 dark:bg-gray-800 text-blue-600"
                         : "text-gray-700 dark:text-gray-300"
-                    }`}
+                    )}
                   >
-                    <Settings className="h-4 w-4" />
-                    <span>Dashboard</span>
+                    <Icon className="h-4 w-4" />
+                    <span>{item.label}</span>
                   </Link>
+                );
+              })}
+            </div>
 
-                  <Link
-                    to="/admin/parking-report"
-                    className={`cursor-pointer px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center space-x-1 ${
-                      location.pathname === "/admin/parking-report"
-                        ? "bg-gray-100 dark:bg-gray-800 text-blue-600"
-                        : "text-gray-700 dark:text-gray-300"
-                    }`}
-                  >
-                    <BarChart3 className="h-4 w-4" />
-                    <span>Reports</span>
-                  </Link>
-
-                  <Link
-                    to="/admin/zone-controls"
-                    className={`cursor-pointer px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center space-x-1 ${
-                      location.pathname === "/admin/zone-controls"
-                        ? "bg-gray-100 dark:bg-gray-800 text-blue-600"
-                        : "text-gray-700 dark:text-gray-300"
-                    }`}
-                  >
-                    <Settings2 className="h-4 w-4" />
-                    <span>Zones</span>
-                  </Link>
-
-                  <Link
-                    to="/admin/category-rates"
-                    className={`cursor-pointer px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center space-x-1 ${
-                      location.pathname === "/admin/category-rates"
-                        ? "bg-gray-100 dark:bg-gray-800 text-blue-600"
-                        : "text-gray-700 dark:text-gray-300"
-                    }`}
-                  >
-                    <DollarSign className="h-4 w-4" />
-                    <span>Rates</span>
-                  </Link>
-                </>
-              )}
-
-              {user.role === "employee" && (
-                <Link
-                  to="/checkpoint"
-                  className={`cursor-pointer px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center space-x-1 ${
-                    location.pathname === "/checkpoint"
-                      ? "bg-gray-100 dark:bg-gray-800 text-blue-600"
-                      : "text-gray-700 dark:text-gray-300"
-                  }`}
-                >
-                  <Car className="h-4 w-4" />
-                  <span>Checkpoint</span>
-                </Link>
-              )}
+            {/* Desktop User Info & Logout */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-300">
+                <User className="h-4 w-4" />
+                <span className="font-medium">{user.username}</span>
+              </div>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={handleLogout}
+                className="flex items-center space-x-1"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
+              </Button>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            {/* User Info */}
-            <div className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-300">
+
+          {/* Mobile Navigation - Username + Burger Menu */}
+          <div className="flex md:hidden items-center gap-2">
+            {/* Mobile Username */}
+            <div className="flex items-center space-x-1 text-sm text-gray-700 dark:text-gray-300">
               <User className="h-4 w-4" />
               <span className="font-medium">{user.username}</span>
             </div>
-            {/* Logout Button */}
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={handleLogout}
-              className="flex items-center space-x-1"
-            >
-              <LogOut className="h-4 w-4" />
-              <span>Logout</span>
-            </Button>
+
+            {/* Mobile Burger Menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="p-2">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                {/* Navigation Items */}
+                {navigationItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = location.pathname === item.to;
+                  return (
+                    <DropdownMenuItem key={item.to} asChild>
+                      <Link
+                        to={item.to}
+                        className={cn(
+                          "flex items-center space-x-2 w-full",
+                          isActive && "text-blue-600 bg-blue-50"
+                        )}
+                      >
+                        <Icon className="h-4 w-4" />
+                        <span>{item.label}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  );
+                })}
+
+                <DropdownMenuSeparator />
+
+                {/* Logout */}
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="text-red-600"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  <span>Logout</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
