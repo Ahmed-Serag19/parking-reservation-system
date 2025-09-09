@@ -33,7 +33,7 @@ export function LoginForm() {
 
   return (
     <Card className="w-full max-w-md">
-      <CardHeader className="space-y-1 p-4 sm:p-6">
+      <CardHeader className="space-y-1 p-2 sm:p-4">
         <CardTitle className="text-xl sm:text-2xl font-bold text-center">
           Welcome Back
         </CardTitle>
@@ -41,7 +41,7 @@ export function LoginForm() {
           Enter your credentials to access the parking system
         </CardDescription>
       </CardHeader>
-      <CardContent className="p-4 sm:p-6 pt-0">
+      <CardContent className="p-2 sm:p-4 pt-0">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-3 sm:space-y-4"

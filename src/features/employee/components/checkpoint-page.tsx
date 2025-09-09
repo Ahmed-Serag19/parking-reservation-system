@@ -179,33 +179,34 @@ export function CheckpointPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
+                <div className="space-y-2">
                   <Label className="text-sm font-medium">Ticket ID</Label>
-                  <p className="text-sm text-muted-foreground">{ticket.id}</p>
+                  <Badge variant="outline" className="text-sm">
+                    {ticket.id}
+                  </Badge>
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-2">
                   <Label className="text-sm font-medium">Type</Label>
-                  <div>
-                    <Badge
-                      variant={
-                        ticket.type === "visitor" ? "default" : "secondary"
-                      }
-                    >
-                      {ticket.type}
-                    </Badge>
-                  </div>
+                  <Badge
+                    variant={
+                      ticket.type === "visitor" ? "default" : "secondary"
+                    }
+                    className="text-sm"
+                  >
+                    {ticket.type}
+                  </Badge>
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-2">
                   <Label className="text-sm font-medium">Check-in Time</Label>
-                  <p className="text-sm text-muted-foreground">
+                  <Badge variant="outline" className="text-sm">
                     {new Date(ticket.checkinAt).toLocaleString()}
-                  </p>
+                  </Badge>
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-2">
                   <Label className="text-sm font-medium">Zone</Label>
-                  <p className="text-sm text-muted-foreground">
+                  <Badge variant="outline" className="text-sm">
                     {ticket.zoneId}
-                  </p>
+                  </Badge>
                 </div>
               </div>
 
