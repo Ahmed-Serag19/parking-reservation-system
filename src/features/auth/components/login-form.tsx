@@ -33,45 +33,52 @@ export function LoginForm() {
 
   return (
     <Card className="w-full max-w-md">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">
+      <CardHeader className="space-y-1 p-4 sm:p-6">
+        <CardTitle className="text-xl sm:text-2xl font-bold text-center">
           Welcome Back
         </CardTitle>
-        <CardDescription className="text-center">
+        <CardDescription className="text-center text-sm sm:text-base">
           Enter your credentials to access the parking system
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
+      <CardContent className="p-4 sm:p-6 pt-0">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-3 sm:space-y-4"
+        >
+          <div className="space-y-1.5 sm:space-y-2">
+            <Label htmlFor="username" className="text-sm sm:text-base">
+              Username
+            </Label>
             <div className="relative">
               <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="username"
                 type="text"
                 placeholder="Enter your username"
-                className="pl-10"
+                className="pl-10 h-10 sm:h-11 text-sm sm:text-base"
                 disabled={isLoading}
                 {...register("username")}
               />
             </div>
             {errors.username && (
-              <p className="text-sm text-destructive">
+              <p className="text-xs sm:text-sm text-destructive">
                 {errors.username.message}
               </p>
             )}
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+          <div className="space-y-1.5 sm:space-y-2">
+            <Label htmlFor="password" className="text-sm sm:text-base">
+              Password
+            </Label>
             <div className="relative">
               <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
-                className="pl-10 pr-10"
+                className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base"
                 disabled={isLoading}
                 {...register("password")}
               />
@@ -89,13 +96,17 @@ export function LoginForm() {
               </button>
             </div>
             {errors.password && (
-              <p className="text-sm text-destructive">
+              <p className="text-xs sm:text-sm text-destructive">
                 {errors.password.message}
               </p>
             )}
           </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
+          <Button
+            type="submit"
+            className="w-full h-10 sm:h-11 text-sm sm:text-base"
+            disabled={isLoading}
+          >
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
