@@ -116,15 +116,13 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            {/* Gate Screen - Public Access (no auth required) */}
+            <Route path="/gate/:gateId" element={<GatePage />} />
+
+            {/* Redirect /gate to gate_1 as default */}
             <Route
-              path="/gate/:gateId"
-              element={
-                <ProtectedRoute allowedRoles={["admin", "employee"]}>
-                  <AppLayout>
-                    <GatePage />
-                  </AppLayout>
-                </ProtectedRoute>
-              }
+              path="/gate"
+              element={<Navigate to="/gate/gate_1" replace />}
             />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
             <Route path="*" element={<NotFoundPage />} />
