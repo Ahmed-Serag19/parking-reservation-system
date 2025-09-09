@@ -6,6 +6,7 @@ import type { CreateEmployeeRequest } from "../../../types/api";
 export const adminQueryKeys = {
   parkingReport: ["admin", "parking-state-report"] as const,
   zones: ["admin", "zones"] as const,
+  gates: ["gates"] as const,
   categories: ["categories"] as const,
   employees: ["employees"] as const,
   rushHours: ["rush-hours"] as const,
@@ -29,6 +30,15 @@ export const useAdminZones = () => {
     queryFn: () => api.getZones(),
     refetchInterval: 30000,
     staleTime: 0,
+  });
+};
+
+// === Gates ===
+export const useGates = () => {
+  return useQuery({
+    queryKey: adminQueryKeys.gates,
+    queryFn: () => api.getGates(),
+    staleTime: 300000, // 5 minutes - gates don't change often
   });
 };
 
