@@ -99,40 +99,42 @@ export function ZoneCard({
 
       <CardContent className="space-y-4">
         {/* Availability Stats */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex items-center gap-2">
-            <div className="p-2 rounded-full bg-red-100">
-              <Users className="w-4 h-4 text-red-600" />
+        <div className="grid grid-cols-2 gap-2 sm:gap-4">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <div className="p-1 sm:p-2 rounded-full bg-red-100">
+              <Users className="w-3 h-3 sm:w-4 sm:h-4 text-red-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                 Occupied
               </p>
-              <p className="text-xl font-bold text-red-600">{zone.occupied}</p>
+              <p className="text-lg sm:text-xl font-bold text-red-600">
+                {zone.occupied}
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <div
               className={cn(
-                "p-2 rounded-full",
+                "p-1 sm:p-2 rounded-full",
                 availableCount > 0 ? "bg-green-100" : "bg-red-100"
               )}
             >
               <Car
                 className={cn(
-                  "w-4 h-4",
+                  "w-3 h-3 sm:w-4 sm:h-4",
                   availableCount > 0 ? "text-green-600" : "text-red-600"
                 )}
               />
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                 Available
               </p>
               <p
                 className={cn(
-                  "text-xl font-bold",
+                  "text-lg sm:text-xl font-bold",
                   availableCount > 0 ? "text-green-600" : "text-red-600"
                 )}
               >
@@ -171,31 +173,35 @@ export function ZoneCard({
         </div>
 
         {/* Detailed Stats */}
-        <div className="grid grid-cols-3 gap-2 text-xs text-muted-foreground">
-          <div>
+        <div className="grid grid-cols-3 gap-1 sm:gap-2 text-xs text-muted-foreground">
+          <div className="text-center">
             <span className="block">Free</span>
-            <span className="font-medium text-foreground">{zone.free}</span>
+            <span className="font-medium text-foreground text-sm">
+              {zone.free}
+            </span>
           </div>
-          <div>
+          <div className="text-center">
             <span className="block">Reserved</span>
-            <span className="font-medium text-foreground">{zone.reserved}</span>
+            <span className="font-medium text-foreground text-sm">
+              {zone.reserved}
+            </span>
           </div>
-          <div>
+          <div className="text-center">
             <span className="block">Total</span>
-            <span className="font-medium text-foreground">
+            <span className="font-medium text-foreground text-sm">
               {zone.totalSlots}
             </span>
           </div>
         </div>
 
         {/* Rates */}
-        <div className="border-t pt-3">
+        <div className="border-t pt-2 sm:pt-3">
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-sm font-medium">Current Rate</p>
+              <p className="text-xs sm:text-sm font-medium">Current Rate</p>
               <p
                 className={cn(
-                  "text-xl font-bold",
+                  "text-lg sm:text-xl font-bold",
                   isSpecialRate ? "text-orange-600" : "text-green-600"
                 )}
               >

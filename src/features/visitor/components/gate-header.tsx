@@ -20,9 +20,21 @@ interface GateHeaderProps {
 
 // Available gates configuration
 const AVAILABLE_GATES = [
-  { id: "gate_1", name: "Gate 1 - Premium", description: "VIP & Executive zones" },
-  { id: "gate_2", name: "Gate 2 - Standard", description: "Regular parking zones" },
-  { id: "gate_3", name: "Gate 3 - Economy", description: "Budget-friendly zones" },
+  {
+    id: "gate_1",
+    name: "Gate 1 - Premium",
+    description: "VIP & Executive zones",
+  },
+  {
+    id: "gate_2",
+    name: "Gate 2 - Standard",
+    description: "Regular parking zones",
+  },
+  {
+    id: "gate_3",
+    name: "Gate 3 - Economy",
+    description: "Budget-friendly zones",
+  },
 ];
 
 export function GateHeader({
@@ -66,27 +78,31 @@ export function GateHeader({
   };
 
   return (
-    <div className="bg-card border-b border-border p-6">
+    <div className="bg-card border-b border-border p-3 sm:p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           {/* Gate Info with Selector */}
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">
+              <h1 className="text-xl sm:text-3xl font-bold text-foreground">
                 {gateName || `Gate ${gateId}`}
               </h1>
-              <p className="text-muted-foreground mt-1">
+              <p className="text-sm sm:text-base text-muted-foreground mt-1">
                 Parking Check-in Terminal
               </p>
             </div>
-            
+
             {/* Gate Selector Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="gap-2">
-                  <MapPin className="w-4 h-4" />
-                  Switch Gate
-                  <ChevronDown className="w-4 h-4" />
+                <Button
+                  variant="outline"
+                  className="gap-1 sm:gap-2 w-full sm:w-auto text-xs sm:text-sm"
+                >
+                  <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span className="hidden xs:inline">Switch Gate</span>
+                  <span className="xs:hidden">Switch</span>
+                  <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-56">
@@ -118,25 +134,25 @@ export function GateHeader({
           </div>
 
           {/* Status and Time */}
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
             {/* Connection Status */}
             <div className="flex items-center gap-2">
               {isConnected ? (
                 <>
-                  <Wifi className="w-5 h-5 text-green-600" />
+                  <Wifi className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
                   <Badge
                     variant="outline"
-                    className="text-green-600 border-green-300"
+                    className="text-green-600 border-green-300 text-xs sm:text-sm"
                   >
                     Connected
                   </Badge>
                 </>
               ) : (
                 <>
-                  <WifiOff className="w-5 h-5 text-red-600" />
+                  <WifiOff className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
                   <Badge
                     variant="outline"
-                    className="text-red-600 border-red-300"
+                    className="text-red-600 border-red-300 text-xs sm:text-sm"
                   >
                     {reconnectAttempts > 0
                       ? `Reconnecting... (${reconnectAttempts})`
@@ -147,13 +163,13 @@ export function GateHeader({
             </div>
 
             {/* Current Time */}
-            <div className="flex items-center gap-2 text-right">
-              <Clock className="w-5 h-5 text-muted-foreground" />
+            <div className="flex items-center gap-2 text-left sm:text-right">
+              <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
               <div>
-                <p className="text-2xl font-bold text-foreground">
+                <p className="text-lg sm:text-2xl font-bold text-foreground">
                   {formatTime(currentTime)}
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   {formatDate(currentTime)}
                 </p>
               </div>
