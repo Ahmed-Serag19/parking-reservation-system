@@ -201,21 +201,29 @@ export function GatePage() {
         reconnectAttempts={reconnectAttempts}
       />
 
-      <div className="max-w-7xl mx-auto p-6">
+      <div className="max-w-7xl mx-auto p-3 sm:p-6">
         <Tabs
           value={activeTab}
           onValueChange={(value) =>
             setActiveTab(value as "visitor" | "subscriber")
           }
         >
-          <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="visitor" className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              Visitor Parking
+          <TabsList className="grid w-full grid-cols-2 mb-6 sm:mb-8 h-12 sm:h-auto">
+            <TabsTrigger
+              value="visitor"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-base px-2 sm:px-4"
+            >
+              <Users className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">Visitor Parking</span>
+              <span className="xs:hidden">Visitor</span>
             </TabsTrigger>
-            <TabsTrigger value="subscriber" className="flex items-center gap-2">
-              <CreditCard className="w-4 h-4" />
-              Subscriber Parking
+            <TabsTrigger
+              value="subscriber"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-base px-2 sm:px-4"
+            >
+              <CreditCard className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">Subscriber Parking</span>
+              <span className="xs:hidden">Subscriber</span>
             </TabsTrigger>
           </TabsList>
 
@@ -269,7 +277,7 @@ export function GatePage() {
               </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
               {displayZones.map((zone) => (
                 <ZoneCard
                   key={zone.id}
@@ -283,14 +291,16 @@ export function GatePage() {
             </div>
 
             {selectedZone && (
-              <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-card border border-border rounded-xl p-6 shadow-2xl max-w-md w-full mx-4 backdrop-blur-sm">
-                <div className="flex items-center justify-between">
+              <div className="fixed bottom-3 sm:bottom-6 left-1/2 transform -translate-x-1/2 bg-card border border-border rounded-xl p-3 sm:p-6 shadow-2xl max-w-md w-full mx-3 sm:mx-4 backdrop-blur-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
-                      <p className="font-bold text-lg">{selectedZone.name}</p>
+                      <p className="font-bold text-base sm:text-lg">
+                        {selectedZone.name}
+                      </p>
                     </div>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="grid grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm">
                       <div>
                         <p className="text-muted-foreground">Rate</p>
                         <p className="font-semibold text-green-600">
@@ -298,7 +308,7 @@ export function GatePage() {
                           {selectedZone.specialActive
                             ? selectedZone.rateSpecial
                             : selectedZone.rateNormal}
-                          /hour
+                          /hr
                           {selectedZone.specialActive && (
                             <span className="ml-1 text-xs bg-orange-100 text-orange-600 px-1 rounded">
                               SPECIAL
@@ -317,8 +327,8 @@ export function GatePage() {
                   <Button
                     onClick={handleVisitorCheckin}
                     disabled={!canProceedVisitor || checkin.isPending}
-                    size="lg"
-                    className="ml-4 min-w-[120px]"
+                    size="sm"
+                    className="sm:ml-4 min-w-full sm:min-w-[120px] h-12 sm:h-auto"
                   >
                     {checkin.isPending ? (
                       <>
@@ -392,7 +402,7 @@ export function GatePage() {
               </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
               {displayZones.map((zone) => {
                 const isSubscriptionValid =
                   subscription?.category === zone.categoryId;
@@ -430,17 +440,19 @@ export function GatePage() {
             </div>
 
             {selectedZone && subscription && (
-              <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-card border border-border rounded-xl p-6 shadow-2xl max-w-md w-full mx-4 backdrop-blur-sm">
-                <div className="flex items-center justify-between">
+              <div className="fixed bottom-3 sm:bottom-6 left-1/2 transform -translate-x-1/2 bg-card border border-border rounded-xl p-3 sm:p-6 shadow-2xl max-w-md w-full mx-3 sm:mx-4 backdrop-blur-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></div>
-                      <p className="font-bold text-lg">{selectedZone.name}</p>
+                      <p className="font-bold text-base sm:text-lg">
+                        {selectedZone.name}
+                      </p>
                     </div>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="grid grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm">
                       <div>
                         <p className="text-muted-foreground">Subscriber</p>
-                        <p className="font-semibold text-blue-600">
+                        <p className="font-semibold text-blue-600 truncate">
                           {subscription.userName}
                         </p>
                       </div>
@@ -453,8 +465,8 @@ export function GatePage() {
                   <Button
                     onClick={handleSubscriberCheckin}
                     disabled={!canProceedSubscriber || checkin.isPending}
-                    size="lg"
-                    className="ml-4 min-w-[120px] bg-blue-600 hover:bg-blue-700"
+                    size="sm"
+                    className="sm:ml-4 min-w-full sm:min-w-[120px] h-12 sm:h-auto bg-blue-600 hover:bg-blue-700"
                   >
                     {checkin.isPending ? (
                       <>
@@ -488,15 +500,15 @@ export function GatePage() {
       )}
 
       {/* Quick Gate Navigation - Fixed Bottom */}
-      <div className="fixed bottom-4 right-4">
-        <div className="flex flex-col gap-2">
+      <div className="fixed bottom-2 sm:bottom-4 right-2 sm:right-4 z-40">
+        <div className="flex flex-col gap-1 sm:gap-2">
           {["gate_1", "gate_2", "gate_3"].map((gate) => (
             <Button
               key={gate}
               variant={gate === gateId ? "default" : "outline"}
               size="sm"
               className={cn(
-                "w-12 h-12 rounded-full font-bold transition-all duration-200",
+                "w-10 h-10 sm:w-12 sm:h-12 rounded-full font-bold transition-all duration-200 text-xs sm:text-sm",
                 gate === gateId
                   ? "shadow-lg ring-2 ring-primary/20"
                   : "hover:scale-110"
