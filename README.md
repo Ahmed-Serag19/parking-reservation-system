@@ -77,6 +77,8 @@ src/
 - **Cache Synchronization**: React Query cache updates from WebSocket messages
 - **Offline Support**: Cached zone state for graceful degradation
 
+See [FRONTEND_ARCHITECTURE.md](./FRONTEND_ARCHITECTURE.md) for detailed architecture information.
+
 ## 🚀 Quick Start
 
 ### Prerequisites
