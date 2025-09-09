@@ -74,7 +74,11 @@ export function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Navigation Buttons */}
-            <div className="flex items-center space-x-1">
+            <nav
+              className="flex items-center space-x-1"
+              role="navigation"
+              aria-label="Main navigation"
+            >
               {navigationItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.to;
@@ -83,18 +87,19 @@ export function Navbar() {
                     key={item.to}
                     to={item.to}
                     className={cn(
-                      "cursor-pointer px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center space-x-1",
+                      "cursor-pointer px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center space-x-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
                       isActive
                         ? "bg-gray-100 dark:bg-gray-800 text-blue-600"
                         : "text-gray-700 dark:text-gray-300"
                     )}
+                    aria-current={isActive ? "page" : undefined}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className="h-4 w-4" aria-hidden="true" />
                     <span>{item.label}</span>
                   </Link>
                 );
               })}
-            </div>
+            </nav>
 
             {/* Desktop User Info & Logout */}
             <div className="flex items-center gap-3">
@@ -125,12 +130,19 @@ export function Navbar() {
             {/* Mobile Burger Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="p-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="p-2"
+                  aria-label="Open navigation menu"
+                  aria-expanded="false"
+                  aria-haspopup="menu"
+                >
                   <Menu className="h-5 w-5" />
-                  <span className="sr-only">Open menu</span>
+                  <span className="sr-only">Open navigation menu</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-56" role="menu">
                 {/* Navigation Items */}
                 {navigationItems.map((item) => {
                   const Icon = item.icon;
@@ -143,8 +155,10 @@ export function Navbar() {
                           "flex items-center space-x-2 w-full",
                           isActive && "text-blue-600 bg-blue-50"
                         )}
+                        role="menuitem"
+                        aria-current={isActive ? "page" : undefined}
                       >
-                        <Icon className="h-4 w-4" />
+                        <Icon className="h-4 w-4" aria-hidden="true" />
                         <span>{item.label}</span>
                       </Link>
                     </DropdownMenuItem>

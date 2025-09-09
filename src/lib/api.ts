@@ -15,6 +15,8 @@ import type {
   CreateEmployeeResponse,
   ParkingStateZone,
   Category,
+  RushHour,
+  Vacation,
 } from "../types/api";
 
 const API_BASE_URL = "http://localhost:3000/api/v1";
@@ -213,23 +215,26 @@ class ApiService {
   }
 
   // === Rush Hours Management ===
-  async getRushHours(): Promise<any[]> {
-    return this.request<any[]>("/admin/rush-hours");
+  async getRushHours(): Promise<RushHour[]> {
+    return this.request<RushHour[]>("/admin/rush-hours");
   }
 
   async createRushHour(rushHourData: {
     weekDay: number;
     from: string;
     to: string;
-  }): Promise<any> {
-    return this.request<any>("/admin/rush-hours", {
+  }): Promise<RushHour> {
+    return this.request<RushHour>("/admin/rush-hours", {
       method: "POST",
       body: JSON.stringify(rushHourData),
     });
   }
 
-  async updateRushHour(rushHourId: string, rushHourData: any): Promise<any> {
-    return this.request<any>(`/admin/rush-hours/${rushHourId}`, {
+  async updateRushHour(
+    rushHourId: string,
+    rushHourData: Partial<RushHour>
+  ): Promise<RushHour> {
+    return this.request<RushHour>(`/admin/rush-hours/${rushHourId}`, {
       method: "PUT",
       body: JSON.stringify(rushHourData),
     });
@@ -242,23 +247,26 @@ class ApiService {
   }
 
   // === Vacations Management ===
-  async getVacations(): Promise<any[]> {
-    return this.request<any[]>("/admin/vacations");
+  async getVacations(): Promise<Vacation[]> {
+    return this.request<Vacation[]>("/admin/vacations");
   }
 
   async createVacation(vacationData: {
     name: string;
     from: string;
     to: string;
-  }): Promise<any> {
-    return this.request<any>("/admin/vacations", {
+  }): Promise<Vacation> {
+    return this.request<Vacation>("/admin/vacations", {
       method: "POST",
       body: JSON.stringify(vacationData),
     });
   }
 
-  async updateVacation(vacationId: string, vacationData: any): Promise<any> {
-    return this.request<any>(`/admin/vacations/${vacationId}`, {
+  async updateVacation(
+    vacationId: string,
+    vacationData: Partial<Vacation>
+  ): Promise<Vacation> {
+    return this.request<Vacation>(`/admin/vacations/${vacationId}`, {
       method: "PUT",
       body: JSON.stringify(vacationData),
     });

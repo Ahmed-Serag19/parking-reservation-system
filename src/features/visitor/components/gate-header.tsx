@@ -98,14 +98,23 @@ export function GateHeader({
                 <Button
                   variant="outline"
                   className="gap-1 sm:gap-2 w-full sm:w-auto text-xs sm:text-sm"
+                  aria-label="Switch to different gate"
+                  aria-haspopup="menu"
+                  aria-expanded="false"
                 >
-                  <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <MapPin
+                    className="w-3 h-3 sm:w-4 sm:h-4"
+                    aria-hidden="true"
+                  />
                   <span className="hidden xs:inline">Switch Gate</span>
                   <span className="xs:hidden">Switch</span>
-                  <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <ChevronDown
+                    className="w-3 h-3 sm:w-4 sm:h-4"
+                    aria-hidden="true"
+                  />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-56">
+              <DropdownMenuContent align="start" className="w-56" role="menu">
                 {AVAILABLE_GATES.map((gate) => (
                   <DropdownMenuItem
                     key={gate.id}
@@ -114,9 +123,11 @@ export function GateHeader({
                       "flex flex-col items-start gap-1 p-3",
                       gate.id === gateId && "bg-accent"
                     )}
+                    role="menuitem"
+                    aria-current={gate.id === gateId ? "true" : "false"}
                   >
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4" />
+                      <MapPin className="w-4 h-4" aria-hidden="true" />
                       <span className="font-medium">{gate.name}</span>
                       {gate.id === gateId && (
                         <Badge variant="secondary" className="text-xs">

@@ -45,10 +45,26 @@ export function ZoneCard({
   const isSpecialRate = zone.specialActive || false;
   const currentRate = isSpecialRate ? zone.rateSpecial : zone.rateNormal;
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      if (isAvailable && !disabled) {
+        onSelect(zone.id);
+      }
+    }
+  };
+
+  const getAccessibilityLabel = () => {
+    const status = zone.open ? "open" : "closed";
+    const availability = isAvailable ? "available" : "unavailable";
+    const rate = isSpecialRate ? "special rate" : "normal rate";
+    return `${zone.name} zone, ${status}, ${availability}, ${availableCount} slots available, ${rate}`;
+  };
+
   return (
     <Card
       className={cn(
-        "cursor-pointer transition-all duration-200 hover:shadow-md",
+        "cursor-pointer transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
         isSelected && "ring-2 ring-primary",
         !isAvailable && "opacity-60 cursor-not-allowed",
         disabled && "opacity-40 cursor-not-allowed",
@@ -60,6 +76,12 @@ export function ZoneCard({
           onSelect(zone.id);
         }
       }}
+      onKeyDown={handleKeyDown}
+      tabIndex={isAvailable && !disabled ? 0 : -1}
+      role="button"
+      aria-label={getAccessibilityLabel()}
+      aria-pressed={isSelected}
+      aria-disabled={!isAvailable || disabled}
     >
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">

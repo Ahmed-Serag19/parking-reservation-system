@@ -123,6 +123,20 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface RushHour {
+  id: string;
+  weekDay: number;
+  from: string;
+  to: string;
+}
+
+export interface Vacation {
+  id: string;
+  name: string;
+  from: string;
+  to: string;
+}
+
 export interface LoginResponse {
   user: User;
   token: string;
