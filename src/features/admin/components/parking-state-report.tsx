@@ -1,73 +1,168 @@
-import {
-  BarChart3,
-  Car,
-  MapPin,
-  AlertCircle,
-  CheckCircle2,
-  Clock,
-} from "lucide-react";
 import { useParkingStateReport } from "../hooks/use-admin";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
+import { Badge } from "../../../components/ui/badge";
+import { Button } from "../../../components/ui/button";
+import {
+  RefreshCw,
+  Car,
+  Users,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
+import { cn } from "../../../lib/utils";
+import type { ParkingStateZone } from "../../../types/api";
 
-export function ParkingStateReport() {
-  const { data: zones = [], isLoading, error } = useParkingStateReport();
+interface ZoneCardProps {
+  zone: ParkingStateZone;
+}
 
-  if (isLoading) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5" />
-            Parking State Report
-          </CardTitle>
-          <CardDescription>Loading parking data...</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="animate-pulse space-y-3">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-20 bg-muted rounded-md"></div>
-            ))}
+function ZoneStatusCard({ zone }: ZoneCardProps) {
+  const occupancyPercentage =
+    zone.totalSlots > 0 ? (zone.occupied / zone.totalSlots) * 100 : 0;
+
+  const getStatusColor = () => {
+    if (!zone.open) return "text-gray-500";
+    if (occupancyPercentage >= 90) return "text-red-600";
+    if (occupancyPercentage >= 70) return "text-yellow-600";
+    return "text-green-600";
+  };
+
+  const getStatusIcon = () => {
+    if (!zone.open) return <XCircle className="w-5 h-5 text-gray-500" />;
+    if (occupancyPercentage >= 90)
+      return <AlertTriangle className="w-5 h-5 text-red-600" />;
+    return <CheckCircle className="w-5 h-5 text-green-600" />;
+  };
+
+  return (
+    <Card
+      className={cn(
+        "transition-all duration-200 hover:shadow-md",
+        !zone.open && "opacity-60",
+        occupancyPercentage >= 90 && zone.open && "border-red-200 bg-red-50",
+        occupancyPercentage >= 70 &&
+          occupancyPercentage < 90 &&
+          zone.open &&
+          "border-yellow-200 bg-yellow-50"
+      )}
+    >
+      <CardHeader className="pb-4">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg font-semibold">{zone.name}</CardTitle>
+          <div className="flex items-center gap-2">
+            {getStatusIcon()}
+            <Badge variant={zone.open ? "default" : "secondary"}>
+              {zone.open ? "Open" : "Closed"}
+            </Badge>
           </div>
-        </CardContent>
-      </Card>
-    );
-  }
+        </div>
+        <div className="text-sm text-muted-foreground">
+          Zone ID: {zone.zoneId}
+        </div>
+      </CardHeader>
 
-  if (error) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5" />
-            Parking State Report
-          </CardTitle>
-          <CardDescription>Failed to load parking data</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-2 text-destructive">
-            <AlertCircle className="h-4 w-4" />
-            <p className="text-sm">
-              Error loading parking state. Please try again.
+      <CardContent className="space-y-4">
+        {/* Occupancy Overview */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-full bg-red-100">
+              <Car className="w-4 h-4 text-red-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">
+                Occupied
+              </p>
+              <p className="text-xl font-bold text-red-600">{zone.occupied}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-full bg-green-100">
+              <Car className="w-4 h-4 text-green-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Free</p>
+              <p className="text-xl font-bold text-green-600">{zone.free}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Capacity Progress Bar */}
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">Capacity</span>
+            <span className={getStatusColor()}>
+              {zone.occupied}/{zone.totalSlots} (
+              {occupancyPercentage.toFixed(0)}%)
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-3">
+            <div
+              className={cn(
+                "h-3 rounded-full transition-all duration-500",
+                occupancyPercentage >= 90
+                  ? "bg-red-500"
+                  : occupancyPercentage >= 70
+                  ? "bg-yellow-500"
+                  : "bg-green-500"
+              )}
+              style={{ width: `${Math.min(occupancyPercentage, 100)}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Availability Details */}
+        <div className="grid grid-cols-2 gap-4 pt-2 border-t">
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground">Visitors</p>
+            <p className="text-lg font-semibold text-blue-600">
+              {zone.availableForVisitors}
             </p>
           </div>
-        </CardContent>
-      </Card>
-    );
-  }
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground">Subscribers</p>
+            <p className="text-lg font-semibold text-purple-600">
+              {zone.availableForSubscribers}
+            </p>
+          </div>
+        </div>
 
-  // Calculate totals
-  const totals = zones.reduce(
+        {/* Additional Stats */}
+        <div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground pt-2 border-t">
+          <div className="flex items-center gap-1">
+            <Users className="w-3 h-3" />
+            <span>Reserved: {zone.reserved}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Users className="w-3 h-3" />
+            <span>Subscribers: {zone.subscriberCount}</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export function ParkingStateReport() {
+  const {
+    data: zones = [],
+    isLoading,
+    error,
+    refetch,
+    isRefetching,
+  } = useParkingStateReport();
+
+  const totalStats = zones.reduce(
     (acc, zone) => ({
       totalSlots: acc.totalSlots + zone.totalSlots,
       occupied: acc.occupied + zone.occupied,
       free: acc.free + zone.free,
-      reserved: acc.reserved + zone.reserved,
       availableForVisitors:
         acc.availableForVisitors + zone.availableForVisitors,
       availableForSubscribers:
@@ -77,194 +172,177 @@ export function ParkingStateReport() {
       totalSlots: 0,
       occupied: 0,
       free: 0,
-      reserved: 0,
       availableForVisitors: 0,
       availableForSubscribers: 0,
     }
   );
 
-  const occupancyRate =
-    totals.totalSlots > 0 ? (totals.occupied / totals.totalSlots) * 100 : 0;
+  const overallOccupancy =
+    totalStats.totalSlots > 0
+      ? (totalStats.occupied / totalStats.totalSlots) * 100
+      : 0;
+
+  if (error) {
+    return (
+      <div className="p-8 max-w-7xl mx-auto">
+        <div className="text-center py-12">
+          <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold mb-2">
+            Failed to load parking state
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Please try refreshing the page
+          </p>
+          <Button onClick={() => refetch()} variant="outline">
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <BarChart3 className="h-5 w-5" />
-          Parking State Report
-        </CardTitle>
-        <CardDescription>
-          Real-time parking occupancy and availability across all zones
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Summary Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div
-            key="total-capacity"
-            className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <MapPin className="h-4 w-4 text-blue-600" />
-              <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
-                Total Capacity
-              </span>
-            </div>
-            <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">
-              {totals.totalSlots}
-            </p>
-          </div>
-
-          <div
-            key="occupied"
-            className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800"
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <Car className="h-4 w-4 text-red-600" />
-              <span className="text-sm font-medium text-red-800 dark:text-red-200">
-                Occupied
-              </span>
-            </div>
-            <p className="text-2xl font-bold text-red-900 dark:text-red-100">
-              {totals.occupied}
-            </p>
-            <p className="text-xs text-red-600 dark:text-red-400">
-              {occupancyRate.toFixed(1)}% full
-            </p>
-          </div>
-
-          <div
-            key="available"
-            className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <CheckCircle2 className="h-4 w-4 text-green-600" />
-              <span className="text-sm font-medium text-green-800 dark:text-green-200">
-                Available
-              </span>
-            </div>
-            <p className="text-2xl font-bold text-green-900 dark:text-green-100">
-              {totals.free}
-            </p>
-          </div>
-
-          <div
-            key="reserved"
-            className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800"
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <Clock className="h-4 w-4 text-amber-600" />
-              <span className="text-sm font-medium text-amber-800 dark:text-amber-200">
-                Reserved
-              </span>
-            </div>
-            <p className="text-2xl font-bold text-amber-900 dark:text-amber-100">
-              {totals.reserved}
-            </p>
-          </div>
+    <div className="p-8 max-w-7xl mx-auto space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Parking State Report</h1>
+          <p className="text-muted-foreground mt-1">
+            Real-time overview of all parking zones
+          </p>
         </div>
+        <Button
+          onClick={() => refetch()}
+          variant="outline"
+          disabled={isRefetching}
+          className="gap-2"
+        >
+          <RefreshCw
+            className={cn("w-4 h-4", isRefetching && "animate-spin")}
+          />
+          {isRefetching ? "Refreshing..." : "Refresh"}
+        </Button>
+      </div>
 
-        {/* Zones Table */}
-        <div className="space-y-3">
-          <h3 className="text-lg font-semibold">Zone Details</h3>
-          <div className="space-y-2">
-            {zones.map((zone) => (
-              <div
-                key={zone.zoneId}
-                className="p-4 border rounded-lg hover:bg-accent/50 transition-colors"
+      {/* Overall Stats */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Car className="w-5 h-5" />
+            Overall Parking Statistics
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+            <div className="text-center">
+              <p className="text-2xl font-bold text-blue-600">
+                {totalStats.totalSlots}
+              </p>
+              <p className="text-sm text-muted-foreground">Total Slots</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-red-600">
+                {totalStats.occupied}
+              </p>
+              <p className="text-sm text-muted-foreground">Occupied</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-green-600">
+                {totalStats.free}
+              </p>
+              <p className="text-sm text-muted-foreground">Free</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-purple-600">
+                {totalStats.availableForVisitors}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Available (Visitors)
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-orange-600">
+                {totalStats.availableForSubscribers}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Available (Subscribers)
+              </p>
+            </div>
+          </div>
+          <div className="mt-6">
+            <div className="flex justify-between text-sm mb-2">
+              <span>Overall Occupancy</span>
+              <span
+                className={cn(
+                  "font-semibold",
+                  overallOccupancy >= 90
+                    ? "text-red-600"
+                    : overallOccupancy >= 70
+                    ? "text-yellow-600"
+                    : "text-green-600"
+                )}
               >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`w-3 h-3 rounded-full ${
-                        zone.open ? "bg-green-500" : "bg-red-500"
-                      }`}
-                    />
-                    <h4 className="font-medium">{zone.name}</h4>
-                    <span className="text-xs bg-muted px-2 py-1 rounded">
-                      {zone.zoneId}
-                    </span>
-                    {!zone.open && (
-                      <span className="text-xs bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-200 px-2 py-1 rounded">
-                        CLOSED
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {zone.occupied}/{zone.totalSlots} occupied
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-6 gap-4 text-sm">
-                  <div>
-                    <span className="text-muted-foreground">Free</span>
-                    <p className="font-medium text-green-600">{zone.free}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Reserved</span>
-                    <p className="font-medium text-amber-600">
-                      {zone.reserved}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">For Visitors</span>
-                    <p className="font-medium text-blue-600">
-                      {zone.availableForVisitors}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">
-                      For Subscribers
-                    </span>
-                    <p className="font-medium text-purple-600">
-                      {zone.availableForSubscribers}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Normal Rate</span>
-                    <p className="font-medium">Rates vary by category</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Special Rate</span>
-                    <p className="font-medium">Rates vary by category</p>
-                  </div>
-                </div>
-
-                {/* Progress bar */}
-                <div className="mt-3">
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div
-                      className={`h-2 rounded-full transition-all ${
-                        zone.occupied / zone.totalSlots > 0.8
-                          ? "bg-red-500"
-                          : zone.occupied / zone.totalSlots > 0.6
-                          ? "bg-amber-500"
-                          : "bg-green-500"
-                      }`}
-                      style={{
-                        width: `${(zone.occupied / zone.totalSlots) * 100}%`,
-                      }}
-                    />
-                  </div>
-                  <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                    <span>0</span>
-                    <span>
-                      {((zone.occupied / zone.totalSlots) * 100).toFixed(1)}%
-                      occupied
-                    </span>
-                    <span>{zone.totalSlots}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+                {overallOccupancy.toFixed(1)}%
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-4">
+              <div
+                className={cn(
+                  "h-4 rounded-full transition-all duration-500",
+                  overallOccupancy >= 90
+                    ? "bg-red-500"
+                    : overallOccupancy >= 70
+                    ? "bg-yellow-500"
+                    : "bg-green-500"
+                )}
+                style={{ width: `${Math.min(overallOccupancy, 100)}%` }}
+              />
+            </div>
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        <div className="text-xs text-muted-foreground flex items-center gap-2">
-          <Clock className="h-3 w-3" />
-          <span>Data updates every 30 seconds</span>
+      {/* Zone Cards */}
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
+              <CardHeader>
+                <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="h-20 bg-gray-200 rounded"></div>
+                  <div className="h-6 bg-gray-200 rounded"></div>
+                  <div className="h-12 bg-gray-200 rounded"></div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
-      </CardContent>
-    </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {zones.map((zone) => (
+            <ZoneStatusCard key={zone.zoneId} zone={zone} />
+          ))}
+        </div>
+      )}
+
+      {!isLoading && zones.length === 0 && (
+        <Card>
+          <CardContent className="text-center py-12">
+            <Car className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-semibold mb-2">
+              No parking zones found
+            </h3>
+            <p className="text-muted-foreground">
+              No parking zones are configured in the system
+            </p>
+          </CardContent>
+        </Card>
+      )}
+    </div>
   );
 }

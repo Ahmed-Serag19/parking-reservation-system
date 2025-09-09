@@ -13,8 +13,8 @@ import type {
   User,
   CreateEmployeeRequest,
   CreateEmployeeResponse,
-  Category,
   ParkingStateZone,
+  Category,
 } from "../types/api";
 
 const API_BASE_URL = "http://localhost:3000/api/v1";
@@ -268,6 +268,11 @@ class ApiService {
     return this.request<void>(`/admin/vacations/${vacationId}`, {
       method: "DELETE",
     });
+  }
+
+  // === Parking State Reports ===
+  async getParkingStateReport(): Promise<ParkingStateZone[]> {
+    return this.request<ParkingStateZone[]>("/admin/reports/parking-state");
   }
 
   // === Subscription Management ===

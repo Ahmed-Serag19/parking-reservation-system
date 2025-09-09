@@ -157,6 +157,20 @@ export interface UpdateCategoryRequest {
   rateSpecial?: number;
 }
 
+// Parking State Report Types
+export interface ParkingStateZone {
+  zoneId: string;
+  name: string;
+  totalSlots: number;
+  occupied: number;
+  free: number;
+  reserved: number;
+  availableForVisitors: number;
+  availableForSubscribers: number;
+  subscriberCount: number;
+  open: boolean;
+}
+
 export interface ApiError {
   status: string;
   message: string;
