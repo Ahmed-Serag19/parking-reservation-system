@@ -7,6 +7,7 @@ A production-ready frontend application for managing parking reservations with *
 
 ![Parking Reservation System](./parking-reservation-diagram.png)
 
+See [FRONTEND_ARCHITECTURE.md](./FRONTEND_ARCHITECTURE.md) for detailed architecture information.
 ---
 
 ##  Live Demo
