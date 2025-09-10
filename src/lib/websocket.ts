@@ -139,7 +139,7 @@ class WebSocketManager {
     this.addEventListener("admin-update", callback);
   }
 
-  private addEventListener(type: string, callback: (data: any) => void) {
+  addEventListener(type: string, callback: (data: any) => void) {
     if (!this.listeners.has(type)) {
       this.listeners.set(type, []);
     }

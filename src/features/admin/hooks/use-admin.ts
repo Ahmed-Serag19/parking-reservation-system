@@ -1,10 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../../../lib/api";
-import type {
-  CreateEmployeeRequest,
-  RushHour,
-  Vacation,
-} from "../../../types/api";
+import type { CreateEmployeeRequest } from "../../../types/api";
 
 // Query Keys
 export const adminQueryKeys = {

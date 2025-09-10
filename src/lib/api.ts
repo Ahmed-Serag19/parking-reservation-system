@@ -278,11 +278,6 @@ class ApiService {
     });
   }
 
-  // === Parking State Reports ===
-  async getParkingStateReport(): Promise<ParkingStateZone[]> {
-    return this.request<ParkingStateZone[]>("/admin/reports/parking-state");
-  }
-
   // === Subscription Management ===
   async getAdminSubscriptions(): Promise<any[]> {
     return this.request<any[]>("/admin/subscriptions");

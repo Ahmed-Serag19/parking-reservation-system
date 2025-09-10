@@ -18,6 +18,7 @@ export interface Category {
 }
 
 export interface Zone {
+  id: string;
   zoneId: string;
   name: string;
   categoryId: string;
@@ -31,6 +32,8 @@ export interface Zone {
   rateNormal: number;
   rateSpecial: number;
   open: boolean;
+  specialActive?: boolean;
+  subscriberCount?: number;
 }
 
 // Parking state report returns zones with different field names

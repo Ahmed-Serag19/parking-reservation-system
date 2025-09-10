@@ -48,41 +48,39 @@ export function GatePage() {
   } = useSubscription(subscriptionId);
 
   // WebSocket with real-time updates and offline caching (bonus features)
-  const { isConnected, connectionStatus, reconnectAttempts } = useGateWebSocket(
-    {
-      gateId,
-      onZoneUpdate: (updatedZone) => {
-        console.log("Zone update received:", updatedZone);
+  const { isConnected, reconnectAttempts } = useGateWebSocket({
+    gateId,
+    onZoneUpdate: (updatedZone) => {
+      console.log("Zone update received:", updatedZone);
 
-        // Update React Query cache first
-        queryClient.setQueryData(
-          visitorQueryKeys.zones(gateId!),
-          (oldZones: Zone[] | undefined) => {
-            if (!oldZones) return [updatedZone];
-            return oldZones.map((zone) =>
-              zone.id === updatedZone.id ? updatedZone : zone
-            );
-          }
-        );
-
-        // Update cached zones for offline mode
-        setCachedZones((prev) =>
-          prev.map((zone) => (zone.id === updatedZone.id ? updatedZone : zone))
-        );
-
-        // Zone updates happen silently for better UX
-      },
-      onAdminUpdate: (update) => {
-        // Show admin updates as toast notifications
-        if (update.action) {
-          toast(`Admin Update: ${update.action}`, {
-            icon: "ℹ️",
-            duration: 3000,
-          });
+      // Update React Query cache first
+      queryClient.setQueryData(
+        visitorQueryKeys.zones(gateId!),
+        (oldZones: Zone[] | undefined) => {
+          if (!oldZones) return [updatedZone];
+          return oldZones.map((zone) =>
+            zone.id === updatedZone.id ? updatedZone : zone
+          );
         }
-      },
-    }
-  );
+      );
+
+      // Update cached zones for offline mode
+      setCachedZones((prev) =>
+        prev.map((zone) => (zone.id === updatedZone.id ? updatedZone : zone))
+      );
+
+      // Zone updates happen silently for better UX
+    },
+    onAdminUpdate: (update) => {
+      // Show admin updates as toast notifications
+      if (update.action) {
+        toast(`Admin Update: ${update.action}`, {
+          icon: "ℹ️",
+          duration: 3000,
+        });
+      }
+    },
+  });
 
   // Cache zones for offline mode (bonus feature)
   useEffect(() => {
