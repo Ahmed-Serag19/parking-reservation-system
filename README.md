@@ -98,7 +98,7 @@ Test coverage includes:
 ##  Documentation
 
 * [Frontend Architecture](./FRONTEND_ARCHITECTURE.md)
-* [Backend Endpoint Coverage](./BACKEND_STATUS.md)
+
 
 ---
 
